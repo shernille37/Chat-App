@@ -1,11 +1,18 @@
 {
   "name": "chat-app",
+  "type": "module",
   "version": "1.0.0",
   "description": "Simple chat application",
   "main": "server.js",
   "scripts": {
+    "start": "node backend/server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Shernille Licud",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.2",
+    "express": "^4.18.1",
+    "mongoose": "^6.5.4"
+  }
 }

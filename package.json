@@ -7,6 +7,8 @@
   "scripts": {
     "start": "node backend/server",
     "server": "nodemon backend/server",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Shernille Licud",
@@ -21,6 +23,7 @@
     "mongoose": "^6.5.4"
   },
   "devDependencies": {
-    "nodemon": "^2.0.19"
+    "nodemon": "^2.0.19",
+    "concurrently": "^7.4.0"
   }
 }

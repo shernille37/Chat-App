@@ -3,10 +3,14 @@ import mongoose from 'mongoose';
 const MessageSchema = new mongoose.Schema(
   {
     chatId: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'Chat',
     },
     senderId: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'User',
     },
     text: {
       type: String,

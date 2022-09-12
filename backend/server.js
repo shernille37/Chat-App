@@ -5,6 +5,7 @@ import colors from 'colors';
 
 import chatRoute from './routes/chatRoute.js';
 import userRoute from './routes/userRoute.js';
+import messageRoute from './routes/messageRoute.js';
 
 import { notFound, errorHandler } from './middlewares/errorMiddleware.js';
 
@@ -22,6 +23,8 @@ app.get('/', (req, res) => res.send('API is running...'));
 app.use('/api/users', userRoute);
 // Chat Routes
 app.use('/api/chat', chatRoute);
+// Message Routes
+app.use('/api/message', messageRoute);
 
 app.use(notFound);
 app.use(errorHandler);

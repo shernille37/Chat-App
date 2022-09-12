@@ -1,38 +1,39 @@
 import Chat from '../models/ChatModel.js';
+import asyncHandler from 'express-async-handler';
 
-export const createChat = async (req, res) => {
+// @desc Create a new chat (connection)
+// @route POST /api/chat
+// @access PUBLIC
+
+export const createChat = asyncHandler(async (req, res) => {
   const newChat = new Chat({
     members: [req.body.senderId, req.body.receiverId],
   });
 
-  try {
-    const result = await newChat.save();
-    res.status(201).json(result);
-  } catch (error) {
-    res.status(500).json(error);
-  }
-};
+  const result = await newChat.save();
+  res.status(201).json(result);
+});
 
-export const userChats = async (req, res) => {
-  try {
-    const chats = await Chat.find({
-      members: { $in: [req.params.userId] },
-    });
+// @desc Find user chats (can be more than one)
+// @route POST /api/chat/:userId
+// @access PUBLIC
 
-    res.status(200).json(chats);
-  } catch (error) {
-    res.status(500).json(error);
-  }
-};
+export const userChats = asyncHandler(async (req, res) => {
+  const chats = await Chat.find({
+    members: { $in: [req.params.userId] },
+  });
 
-export const findChat = async (req, res) => {
-  try {
-    const chat = await Chat.findOne({
-      members: { $all: [req.params.firstId, req.params.secondId] },
-    });
+  res.status(200).json(chats);
+});
 
-    res.status(200).json(chat);
-  } catch (error) {
-    res.status(500).json(error);
-  }
-};
+// @desc Find specific chat (only one)
+// @route POST /api/chat/find/:senderId/:receiverId
+// @access PUBLIC
+
+export const findChat = asyncHandler(async (req, res) => {
+  const chat = await Chat.findOne({
+    members: { $all: [req.params.firstId, req.params.secondId] },
+  });
+
+  res.status(200).json(chat);
+});

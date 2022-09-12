@@ -3,3 +3,203 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+:root {
+  --primary: #4070f4;
+  --danger: rgb(236, 110, 110);
+  --yellow: #f5c32c;
+  --orange: #fca61f;
+  --black: #242d49;
+  --gray: rgba(36, 45, 73, 0.65);
+  --profileShadow: 0px 4px 17px 2px rgba(0, 0, 0, 0.25);
+  --hrColor: #cfcdcd;
+  --cardColor: rgba(224, 138, 138, 0.64);
+  --buttonBg: linear-gradient(98.63deg, #f9a225 0%, #f95f35 100%);
+  --inputColor: rgba(40, 52, 62, 0.07);
+  --photo: #4cb256;
+  --video: #4a4eb7;
+  --location: #ef5757;
+  --shedule: #e1ae4a;
+}
+
+/* blur */
+.blur {
+  position: absolute;
+  width: 22rem;
+  height: 14rem;
+  border-radius: 50%;
+  background: #a6ddf0;
+  filter: blur(72px);
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  background: var(--buttonBg);
+  transition: all 100ms ease-out;
+}
+
+.button:hover {
+  color: var(--orange);
+  border: 2px solid var(--orange);
+  cursor: pointer;
+  background: transparent;
+}
+
+.button:disabled {
+  background: silver;
+  pointer-events: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Form Styling */
+.form-container {
+  background: var(--primary);
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.form {
+  background-color: #fff;
+  border-radius: 1rem;
+  padding: 30px;
+  width: 100%;
+  max-width: 430px;
+}
+
+.form .title {
+  position: relative;
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 2rem;
+}
+
+.form .title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 30px;
+  background-color: var(--primary);
+}
+
+.input-container {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.input-container .form-label {
+  position: absolute;
+  color: #000;
+  font-family: sans-serif;
+  top: 15px;
+  left: 40px;
+  line-height: 14px;
+  pointer-events: none;
+  transform-origin: 0 50%;
+  transition: transform 200ms, color 200ms;
+}
+
+.input-container i.icon {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+}
+
+.input-container i.showPw {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.input-container input {
+  background-color: var(--inputColor);
+  border-radius: 12px;
+  border: 0;
+  box-sizing: border-box;
+  color: #000;
+  font-size: 18px;
+  height: 100%;
+  outline: 0;
+  padding: 10px 35px;
+  width: 100%;
+}
+
+.input-container input:is(:focus, :not(:placeholder-shown)) {
+  box-shadow: 0px 0px 0px 2px #4070f4;
+}
+
+.input-container input:is(:focus, :not(:placeholder-shown)) ~ .form-label {
+  transform: translateY(-35px) translateX(-35px) scale(0.8);
+}
+
+.input-container input:is(:focus, :not(:placeholder-shown)) ~ i.icon {
+  color: var(--primary);
+}
+
+.btn-submit {
+  background-color: var(--primary);
+  border-radius: 12px;
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0.5rem;
+  text-align: center;
+  width: 5rem;
+}
+
+.form-text {
+  display: flex;
+  margin: 1rem 0 0 0;
+  font-size: 1rem;
+}
+
+.form-text p {
+  margin-right: 10px;
+}
+
+.form-text a {
+  text-decoration: none;
+}
+
+.form-text a:hover {
+  text-decoration: underline;
+}
+
+/* Message */
+.error {
+  margin-bottom: 2rem;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  background-color: var(--danger);
+}
+
+.info {
+  margin-bottom: 2rem;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  background-color: var(--primary);
+}

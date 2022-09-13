@@ -2,10 +2,12 @@ import Message from '../models/MessageModel.js';
 import asyncHandler from 'express-async-handler';
 
 // @desc Add Messaeg
-// @route POST /api/message
-// @access PUBLIC
+// @route POST /api/message/:chatId
+// @access PRIVATE
 export const addMessage = asyncHandler(async (req, res) => {
-  const { chatId, senderId, text } = req.body;
+  const chatId = req.params.chatId;
+  const senderId = req.user._id;
+  const { text } = req.body;
 
   const message = new Message({
     chatId,
@@ -19,8 +21,8 @@ export const addMessage = asyncHandler(async (req, res) => {
 });
 
 // @desc Get Messages from ChatID
-// @route POST /api/message/:userId
-// @access PUBLIC
+// @route GET /api/message/:chatId
+// @access PRIVATE
 export const getMessages = asyncHandler(async (req, res) => {
   const chatId = req.params.chatId;
 

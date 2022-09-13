@@ -54,3 +54,28 @@ export const register = createAsyncThunk(
     }
   }
 );
+
+export const getUserProfile = createAsyncThunk(
+  'GET_PROFILE',
+  async ({ id }, { rejectWithValue }) => {
+    const { token } = JSON.parse(localStorage.getItem('user')) || null;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    try {
+      const { data } = await axios.post(`/api/users/${id}`, config);
+
+      return data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+      );
+    }
+  }
+);

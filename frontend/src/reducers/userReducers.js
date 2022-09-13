@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { login, register } from '../actions/userActions';
+import { getUserProfile, login, register } from '../actions/userActions';
 
 const initialState = {
   authUser: {
@@ -7,6 +7,11 @@ const initialState = {
       ? JSON.parse(localStorage.getItem('user'))
       : null,
     loading: false,
+    error: null,
+  },
+  userInfo: {
+    details: null,
+    loading: true,
     error: null,
   },
 };
@@ -47,6 +52,20 @@ const userReducer = createSlice({
       .addCase(register.rejected, ({ authUser }, action) => {
         authUser.loading = false;
         authUser.error = action.payload;
+      })
+
+      // GET USER PROFILE
+
+      .addCase(getUserProfile.pending, ({ userInfo }, action) => {
+        userInfo.loading = true;
+      })
+      .addCase(getUserProfile.fulfilled, ({ userInfo }, action) => {
+        userInfo.loading = false;
+        userInfo.details = action.payload;
+      })
+      .addCase(getUserProfile.rejected, ({ userInfo }, action) => {
+        userInfo.loading = false;
+        userInfo.error = action.payload;
       });
   },
 });

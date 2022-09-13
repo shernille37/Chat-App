@@ -4,7 +4,9 @@ import { validateToken } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
-router.post('/', validateToken, addMessage);
-router.get('/:chatId', validateToken, getMessages);
+router
+  .route('/:chatId')
+  .post(validateToken, addMessage)
+  .get(validateToken, getMessages);
 
 export default router;

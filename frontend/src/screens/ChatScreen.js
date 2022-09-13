@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { getChats } from '../actions/chatActions';
 import '../assets/style/Chat.css';
 
 const ChatScreen = () => {
-  const [chats, setChats] = useState([]);
-
   const authUser = useSelector((state) => state.auth.authUser);
   const { user } = authUser;
 
+  const chatList = useSelector((state) => state.chat.chatList);
+  const { chats, loading, error } = chatList;
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!user) navigate('/login');
+    else dispatch(getChats({ id: user._id }));
   }, [user, navigate]);
 
   return (

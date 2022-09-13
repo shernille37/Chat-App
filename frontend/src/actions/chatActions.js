@@ -4,10 +4,16 @@ import axios from 'axios';
 export const getChats = createAsyncThunk(
   'GET_USER_CHATS',
   async ({ id }, { rejectWithValue }) => {
-    // TODO TOKEN
+    const { token } = JSON.parse(localStorage.getItem('user')) || null;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
 
     try {
-      const { data } = axios.get(`/api/chat/${id}`);
+      const { data } = await axios.get(`/api/chat/${id}`, config);
 
       return data;
     } catch (error) {

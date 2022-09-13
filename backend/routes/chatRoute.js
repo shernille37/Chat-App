@@ -4,11 +4,12 @@ import {
   userChats,
   findChat,
 } from '../controllers/chatController.js';
+import { validateToken } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
-router.post('/', createChat);
-router.get('/:userId', userChats);
-router.get('/find/:firstId/:secondId', findChat);
+router.post('/', validateToken, createChat);
+router.get('/:userId', validateToken, userChats);
+router.get('/find/:firstId/:secondId', validateToken, findChat);
 
 export default router;

@@ -4,7 +4,7 @@ import { format } from 'timeago.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { getMessages } from '../actions/messageActions';
 
-const MessageBox = ({ chatMate }) => {
+const MessageBox = ({ message }) => {
   const authUser = useSelector((state) => state.auth.authUser);
   const { user } = authUser;
 
@@ -14,8 +14,8 @@ const MessageBox = ({ chatMate }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getMessages(chatMate.chatId));
-  }, [chatMate]);
+    dispatch(getMessages(message.chatId));
+  }, []);
 
   return (
     <div className='chat-body'>

@@ -12,7 +12,7 @@ const ChatBox = ({ user: chatMate }) => {
 
           {/* Chatbox messages */}
 
-          <MessageBox chatMate={chatMate} />
+          <MessageBox message={chatMate} />
 
           {/* Chat Sender */}
           <MessageSender chatMate={chatMate} />

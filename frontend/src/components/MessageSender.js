@@ -5,16 +5,23 @@ import { sendMessage } from '../actions/messageActions';
 import '../assets/style/ChatBox.css';
 
 const MessageSender = ({ chatMate }) => {
+  const [message, setMessage] = useState('');
+
   const dispatch = useDispatch();
 
   const submitHandler = (text) => {
     dispatch(sendMessage({ chatId: chatMate.chatId, text }));
+    setMessage('');
   };
 
   return (
     <div className='chat-sender'>
       <i className='icon fa-solid fa-plus'></i>
-      <InputEmoji onEnter={submitHandler} />
+      <InputEmoji
+        value={message}
+        onChange={setMessage}
+        onEnter={submitHandler}
+      />
     </div>
   );
 };

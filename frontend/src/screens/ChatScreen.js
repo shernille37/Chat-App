@@ -5,6 +5,7 @@ import { logout } from '../actions/userActions';
 import { getChats } from '../actions/chatActions';
 import Conversation from '../components/Conversation';
 import Message from '../components/Message';
+import ChatBox from '../components/ChatBox';
 import '../assets/style/Chat.css';
 
 const ChatScreen = () => {
@@ -13,6 +14,8 @@ const ChatScreen = () => {
 
   const chatList = useSelector((state) => state.chat.chatList);
   const { chats, loading, error } = chatList;
+
+  const [clickedUser, setClickedUser] = useState('');
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -47,7 +50,11 @@ const ChatScreen = () => {
               <p>No Chats</p>
             ) : (
               chats.map((chat) => (
-                <div key={chat._id} className='chat-list'>
+                <div
+                  key={chat._id}
+                  className='chat-list'
+                  onClick={() => setClickedUser(chat)}
+                >
                   <Conversation chat={chat} />
                 </div>
               ))
@@ -62,7 +69,11 @@ const ChatScreen = () => {
         {/* RIGHT SIDE */}
 
         <div className='right-side-chat'>
-          <h2>Right Side</h2>
+          {clickedUser ? (
+            <ChatBox user={clickedUser} />
+          ) : (
+            <div className='chat-header'>Click on a conversation</div>
+          )}
         </div>
       </div>
     )

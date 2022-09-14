@@ -2,7 +2,6 @@
   position: relative;
   display: grid;
   grid-template-columns: 22% auto;
-  gap: 1rem;
 }
 
 .left-side-chat {

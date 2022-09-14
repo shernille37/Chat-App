@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk, createAction } from '@reduxjs/toolkit';
 
 export const login = createAsyncThunk(
   'USER_LOGIN',
@@ -27,6 +27,8 @@ export const login = createAsyncThunk(
     }
   }
 );
+
+export const logout = createAction('USER_LOGOUT');
 
 export const register = createAsyncThunk(
   'USER_REGISTER',

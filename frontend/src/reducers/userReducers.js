@@ -1,5 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getUserProfile, login, register } from '../actions/userActions';
+import {
+  getUserProfile,
+  login,
+  logout,
+  register,
+} from '../actions/userActions';
 
 const initialState = {
   authUser: {
@@ -22,6 +27,12 @@ const userReducer = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder
+
+      // LOGOUT
+      .addCase(logout, (state, action) => {
+        localStorage.removeItem('user');
+        return { ...initialState, authUser: { user: null } };
+      })
 
       // LOGIN
       .addCase(login.pending, ({ authUser }, action) => {

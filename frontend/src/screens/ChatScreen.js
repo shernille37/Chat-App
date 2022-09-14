@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { logout } from '../actions/userActions';
 import { getChats } from '../actions/chatActions';
+import Conversation from '../components/Conversation';
+import Message from '../components/Message';
 import '../assets/style/Chat.css';
 
 const ChatScreen = () => {
@@ -22,32 +25,47 @@ const ChatScreen = () => {
   }, [user, navigate]);
 
   return (
-    <div className='chat'>
-      {/* LEFT SIDE */}
+    user && (
+      <div className='chat'>
+        {/* LEFT SIDE */}
 
-      <div className='left-side-chat'>
-        <div className='chat-container'>
-          <h2>Chats</h2>
-          <div className='chat-list'>
+        <div className='left-side-chat'>
+          <div className='chat-container'>
+            <div className='chat-heading'>
+              <p className='name'>{user.name}</p>
+              <p>Chats</p>
+              <i className='icon fa-solid fa-plus'></i>
+            </div>
+
             {loading ? (
-              <p>Loading...</p>
+              <Message variant='info'>Loading...</Message>
             ) : error ? (
-              <p>{error}</p>
+              <p>
+                <Message variant='error'>{error}</Message>
+              </p>
             ) : chats.length === 0 ? (
               <p>No Chats</p>
             ) : (
-              chats.map((chat) => <p key={chat._id}>{chat.name}</p>)
+              chats.map((chat) => (
+                <div key={chat._id} className='chat-list'>
+                  <Conversation chat={chat} />
+                </div>
+              ))
             )}
+
+            <div className='logout' onClick={() => dispatch(logout())}>
+              Logout
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* RIGHT SIDE */}
+        {/* RIGHT SIDE */}
 
-      <div className='right-side-chat'>
-        <h2>Right Side</h2>
+        <div className='right-side-chat'>
+          <h2>Right Side</h2>
+        </div>
       </div>
-    </div>
+    )
   );
 };
 

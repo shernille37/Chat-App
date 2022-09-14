@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getChats } from '../actions/chatActions';
-import { getUserProfile } from '../actions/userActions';
 import '../assets/style/Chat.css';
 
 const ChatScreen = () => {
@@ -12,24 +11,13 @@ const ChatScreen = () => {
   const chatList = useSelector((state) => state.chat.chatList);
   const { chats, loading, error } = chatList;
 
-  const userInfo = useSelector((state) => state.auth.userInfo);
-  const { details } = userInfo;
-
-  const [data, setData] = useState([]);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!user) navigate('/login');
     else {
-      dispatch(getChats({ id: user._id }));
-
-      chats.map((c) => {
-        const chatmateId = c.members.find((id) => id !== user._id);
-        dispatch(getUserProfile({ id: chatmateId }));
-        data.push(details);
-      });
+      dispatch(getChats());
     }
   }, [user, navigate]);
 
@@ -43,10 +31,12 @@ const ChatScreen = () => {
           <div className='chat-list'>
             {loading ? (
               <p>Loading...</p>
+            ) : error ? (
+              <p>{error}</p>
             ) : chats.length === 0 ? (
               <p>No Chats</p>
             ) : (
-              chats.map((c) => <p key={c._id}>{c._id}</p>)
+              chats.map((chat) => <p key={chat._id}>{chat.name}</p>)
             )}
           </div>
         </div>

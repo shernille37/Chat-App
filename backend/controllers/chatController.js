@@ -1,4 +1,5 @@
 import Chat from '../models/ChatModel.js';
+import User from '../models/UserModel.js';
 import asyncHandler from 'express-async-handler';
 
 // @desc Create a new chat (connection)

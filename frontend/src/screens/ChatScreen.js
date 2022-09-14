@@ -43,11 +43,9 @@ const ChatScreen = () => {
             {loading ? (
               <Message variant='info'>Loading...</Message>
             ) : error ? (
-              <p>
-                <Message variant='error'>{error}</Message>
-              </p>
+              <Message variant='error'>{error}</Message>
             ) : chats.length === 0 ? (
-              <p>No Chats</p>
+              <Message variant='info'>No Chats</Message>
             ) : (
               chats.map((chat) => (
                 <div

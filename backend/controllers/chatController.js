@@ -6,10 +6,7 @@ import asyncHandler from 'express-async-handler';
 // @access PRIVATE
 
 export const createChat = asyncHandler(async (req, res) => {
-  const newChat = new Chat({
-    user: req.user._id,
-    chatMate: req.body.chatMate,
-  });
+  const newChat = new Chat({ members: [req.user._id, req.body.chatMate] });
 
   const result = await newChat.save();
   res.status(201).json(result);
@@ -20,12 +17,10 @@ export const createChat = asyncHandler(async (req, res) => {
 // @access PRIVATE
 
 export const userChats = asyncHandler(async (req, res) => {
-  const chats = await Chat.find({ user: req.user._id }).populate(
-    'chatMate',
-    'name'
-  );
+  const chats = await Chat.find({ members: { $in: [req.user._id] } });
 
-  res.status(200).json(chats);
+  if (chats) res.status(200).json(chats);
+  else throw new Error('No chat(s) found');
 });
 
 // @desc Find specific chat (only one)
@@ -34,9 +29,9 @@ export const userChats = asyncHandler(async (req, res) => {
 
 export const findChat = asyncHandler(async (req, res) => {
   const chat = await Chat.findOne({
-    user: req.user._id,
-    chatMate: req.params.chatMateId,
+    members: { $all: [req.user._id, req.params.chatMateId] },
   });
 
-  res.status(200).json(chat);
+  if (chat) res.status(200).json(chat);
+  else throw new Error('No chat found');
 });

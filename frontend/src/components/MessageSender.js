@@ -4,13 +4,13 @@ import { useDispatch } from 'react-redux';
 import { sendMessage } from '../actions/messageActions';
 import '../assets/style/ChatBox.css';
 
-const MessageSender = ({ chatMate }) => {
+const MessageSender = ({ clickedUser }) => {
   const [message, setMessage] = useState('');
 
   const dispatch = useDispatch();
 
   const submitHandler = (text) => {
-    dispatch(sendMessage({ chatId: chatMate.chatId, text }));
+    dispatch(sendMessage({ chatId: clickedUser.chatId, text }));
     setMessage('');
   };
 

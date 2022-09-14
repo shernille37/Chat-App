@@ -111,7 +111,7 @@
   line-height: 14px;
   pointer-events: none;
   transform-origin: 0 50%;
-  transition: transform 200ms, color 200ms;
+  transition: transform 200ms;
 }
 
 .input-container i.icon {

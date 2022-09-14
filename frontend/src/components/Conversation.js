@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getChats } from '../actions/chatActions';
 import Message from './Message';
 import '../assets/style/Chat.css';
+import Spinner from './utils/Spinner';
 
 const Conversation = ({ setClickedUser }) => {
   const dispatch = useDispatch();
@@ -15,7 +16,7 @@ const Conversation = ({ setClickedUser }) => {
   }, []);
 
   return loading ? (
-    <Message variant='info'>Loading...</Message>
+    <Spinner />
   ) : error ? (
     <Message variant='error'>{error}</Message>
   ) : chats.length === 0 ? (

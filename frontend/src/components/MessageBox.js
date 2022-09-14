@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Message from './Message';
 import { format } from 'timeago.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { getMessages } from '../actions/messageActions';
+import Spinner from './utils/Spinner';
 
-const MessageBox = ({ message }) => {
+const MessageBox = ({ clickedUser }) => {
   const authUser = useSelector((state) => state.auth.authUser);
   const { user } = authUser;
 
@@ -12,15 +13,20 @@ const MessageBox = ({ message }) => {
   const { messageList, loading, error } = messages;
 
   const dispatch = useDispatch();
+  const scroll = useRef(null);
 
   useEffect(() => {
-    dispatch(getMessages(message.chatId));
-  }, []);
+    dispatch(getMessages(clickedUser.chatId));
+  }, [clickedUser]);
+
+  useEffect(() => {
+    scroll?.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messageList]);
 
   return (
     <div className='chat-body'>
       {loading ? (
-        <Message variant='info'>Loading...</Message>
+        <Spinner />
       ) : error ? (
         <Message variant='error'>{error}</Message>
       ) : messageList.length === 0 ? (
@@ -28,6 +34,7 @@ const MessageBox = ({ message }) => {
       ) : (
         messageList.map((message) => (
           <div
+            ref={scroll}
             key={message._id}
             className={
               message.senderId === user._id ? 'message own' : 'message'

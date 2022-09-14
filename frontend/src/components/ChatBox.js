@@ -3,19 +3,19 @@ import '../assets/style/ChatBox.css';
 import MessageBox from './MessageBox';
 import MessageSender from './MessageSender';
 
-const ChatBox = ({ user: chatMate }) => {
+const ChatBox = ({ clickedUser }) => {
   return (
-    chatMate && (
+    clickedUser && (
       <div className='chatbox-container'>
         <>
-          <div className='chat-header'>{chatMate.name}</div>
+          <div className='chat-header'>{clickedUser.name}</div>
 
           {/* Chatbox messages */}
 
-          <MessageBox message={chatMate} />
+          <MessageBox clickedUser={clickedUser} />
 
           {/* Chat Sender */}
-          <MessageSender chatMate={chatMate} />
+          <MessageSender clickedUser={clickedUser} />
         </>
       </div>
     )

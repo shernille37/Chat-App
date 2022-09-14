@@ -44,7 +44,7 @@ const ChatScreen = () => {
 
         <div className='right-side-chat'>
           {clickedUser ? (
-            <ChatBox user={clickedUser} />
+            <ChatBox clickedUser={clickedUser} />
           ) : (
             <div className='chat-header'>Click on a conversation</div>
           )}

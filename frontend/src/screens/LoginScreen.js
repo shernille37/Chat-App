@@ -41,9 +41,8 @@ const LoginScreen = () => {
       <div className='form-container'>
         <form className='form' onSubmit={submitHandler}>
           <div className='title'>Login</div>
-          {loading && <Message variant='info'>Logging In</Message>}
+          {loading && <Message variant='info'>Logging In...</Message>}
           {error && <Message variant='error'>{error}</Message>}
-
           <div className='input-container'>
             <input
               type='email'
@@ -57,7 +56,6 @@ const LoginScreen = () => {
               Email
             </label>
           </div>
-
           <div className='input-container'>
             <input
               ref={input}
@@ -76,7 +74,6 @@ const LoginScreen = () => {
               Password
             </label>
           </div>
-
           <button type='submit' className='btn-submit'>
             Login
           </button>

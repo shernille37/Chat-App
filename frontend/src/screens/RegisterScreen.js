@@ -38,7 +38,7 @@ const RegisterScreen = () => {
       <div className='form-container'>
         <form className='form' onSubmit={submitHandler}>
           <div className='title'>Register</div>
-          {loading && <Message variant='info'>Signing Up</Message>}
+          {loading && <Message variant='info'>Signing Up...</Message>}
           {error && <Message variant='error'>{error}</Message>}
           {message && <Message variant='error'>{message}</Message>}
 

@@ -1,24 +1,27 @@
 import React from 'react';
-import '../assets/style/ChatBox.css';
 import MessageBox from './MessageBox';
 import MessageSender from './MessageSender';
 
+import '../assets/style/Chat.css';
+import '../assets/style/ChatBox.css';
+
 const ChatBox = ({ clickedUser }) => {
-  return (
-    clickedUser && (
+  return clickedUser ? (
+    <div className='right-side-chat'>
       <div className='chatbox-container'>
         <>
           <div className='chat-header'>{clickedUser.name}</div>
 
           {/* Chatbox messages */}
-
           <MessageBox clickedUser={clickedUser} />
 
           {/* Chat Sender */}
           <MessageSender clickedUser={clickedUser} />
         </>
       </div>
-    )
+    </div>
+  ) : (
+    <div className='chat-header'>Click on a conversation</div>
   );
 };
 

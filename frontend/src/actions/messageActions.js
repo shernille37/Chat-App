@@ -1,4 +1,4 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk, createAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 export const sendMessage = createAsyncThunk(
@@ -21,6 +21,34 @@ export const sendMessage = createAsyncThunk(
       );
 
       return data;
+    } catch (error) {
+      rejectWithValue(
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.response
+      );
+    }
+  }
+);
+
+export const receiveMessage = createAsyncThunk(
+  'RECEIVE_MESSAGE',
+  async (receivedMessage, { rejectWithValue }) => {
+    const { token } = JSON.parse(localStorage.getItem('user')) || null;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    try {
+      const { data } = await axios.get(
+        `/api/message/${receivedMessage.chatId}`,
+        config
+      );
+
+      return data[data.length - 1];
     } catch (error) {
       rejectWithValue(
         error.response && error.response.data.message

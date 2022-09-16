@@ -4,12 +4,16 @@ import { useDispatch } from 'react-redux';
 import { sendMessage } from '../actions/messageActions';
 import '../assets/style/ChatBox.css';
 
-const MessageSender = ({ clickedUser }) => {
+const MessageSender = ({ clickedUser, setSendMessage }) => {
   const [message, setMessage] = useState('');
 
   const dispatch = useDispatch();
 
   const submitHandler = (text) => {
+    // SEND MESSAGE TO SOCKET SERVER
+    setSendMessage({ ...clickedUser, text: message });
+
+    // SEND MESSAGE TO DATABASE
     dispatch(sendMessage({ chatId: clickedUser.chatId, text }));
     setMessage('');
   };

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { getChats } from '../actions/chatActions';
 import { logout } from '../actions/userActions';
 
@@ -9,9 +10,14 @@ import Spinner from './utils/Spinner';
 
 const Conversation = ({ user, setClickedUser }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const chatList = useSelector((state) => state.chat.chatList);
   const { chats, loading, error } = chatList;
+
+  useEffect(() => {
+    if (!user) navigate('/login');
+  }, [user, navigate]);
 
   useEffect(() => {
     dispatch(getChats());

@@ -1,5 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getMessages, sendMessage } from '../actions/messageActions';
+import {
+  getMessages,
+  receiveMessage,
+  sendMessage,
+} from '../actions/messageActions';
 
 const initialState = {
   message: {
@@ -34,6 +38,17 @@ const messageReducer = createSlice({
         message.messageList.push(action.payload);
       })
       .addCase(sendMessage.rejected, ({ message }, action) => {
+        message.loading = false;
+        message.error = action.payload;
+      })
+      .addCase(receiveMessage.pending, ({ message }, action) => {
+        message.loading = false;
+      })
+      .addCase(receiveMessage.fulfilled, ({ message }, action) => {
+        message.loading = false;
+        message.messageList.push(action.payload);
+      })
+      .addCase(receiveMessage.rejected, ({ message }, action) => {
         message.loading = false;
         message.error = action.payload;
       });

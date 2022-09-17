@@ -7,11 +7,12 @@ import asyncHandler from 'express-async-handler';
 export const addMessage = asyncHandler(async (req, res) => {
   const chatId = req.params.chatId;
   const senderId = req.user._id;
-  const { text } = req.body;
+  const { text, receiverId } = req.body;
 
   const message = new Message({
     chatId,
     senderId,
+    receiverId,
     text,
   });
 

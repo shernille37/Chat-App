@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Conversation from '../components/Conversation';
 import ChatBox from '../components/ChatBox';
+import { receiveMessage } from '../actions/messageActions';
 
 import { io } from 'socket.io-client';
 
@@ -10,14 +11,15 @@ const ChatScreen = () => {
   const authUser = useSelector((state) => state.auth.authUser);
   const { user } = authUser;
 
+  const sentMessage = useSelector((state) => state.message.sentMessage);
+
   const [onlineUsers, setOnlineUsers] = useState([]);
-  const [receivedMessage, setReceivedMessage] = useState('');
-  const [sendMessage, setSendMessage] = useState(null);
   const [clickedUser, setClickedUser] = useState('');
 
   const socket = useRef();
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // CONNECT TO THE SOCKET
   useEffect(() => {
@@ -33,15 +35,15 @@ const ChatScreen = () => {
 
   // SEND MESSAGE TO THE SOCKET SERVER
   useEffect(() => {
-    if (sendMessage !== null) {
-      socket.current.emit('send-message', sendMessage);
+    if (sentMessage !== null) {
+      socket.current.emit('send-message', sentMessage);
     }
-  }, [sendMessage]);
+  }, [sentMessage]);
 
   // RECEIVE MESSAGE FROM THE SOCKET SERVER
   useEffect(() => {
     socket.current.on('receive-message', (data) => {
-      setReceivedMessage(data);
+      dispatch(receiveMessage(data));
     });
   }, []);
 
@@ -58,11 +60,7 @@ const ChatScreen = () => {
 
         {/* RIGHT SIDE */}
 
-        <ChatBox
-          clickedUser={clickedUser}
-          setSendMessage={setSendMessage}
-          receivedMessage={receivedMessage}
-        />
+        <ChatBox clickedUser={clickedUser} />
       </div>
     )
   );

@@ -26,10 +26,11 @@ io.on('connection', (socket) => {
   });
 
   socket.on('send-message', (data) => {
-    const user = activeUsers.find((user) => user.userId === data._id);
-    console.log('Sending from socket to :', data._id);
+    const user = activeUsers.find((user) => user.userId === data.receiverId);
+    console.log('Sending from socket to :', data.receiverId);
 
     if (user) {
+      console.log('RECEIVED MESSAGE');
       io.to(user.socketId).emit('receive-message', data);
     }
   });

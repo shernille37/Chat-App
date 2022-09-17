@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export const sendMessage = createAsyncThunk(
   'SEND_MESSAGE',
-  async ({ chatId, text }, { rejectWithValue }) => {
+  async ({ chatId, text, receiverId }, { rejectWithValue }) => {
     const { token } = JSON.parse(localStorage.getItem('user')) || null;
 
     const config = {
@@ -16,7 +16,7 @@ export const sendMessage = createAsyncThunk(
     try {
       const { data } = await axios.post(
         `/api/message/${chatId}`,
-        { text },
+        { text, receiverId },
         config
       );
 
@@ -31,31 +31,14 @@ export const sendMessage = createAsyncThunk(
   }
 );
 
-export const receiveMessage = createAsyncThunk(
+export const receiveMessage = createAction(
   'RECEIVE_MESSAGE',
-  async (receivedMessage, { rejectWithValue }) => {
-    const { token } = JSON.parse(localStorage.getItem('user')) || null;
-
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
+  (receivedMessage) => {
+    return {
+      payload: {
+        ...receivedMessage,
       },
     };
-
-    try {
-      const { data } = await axios.get(
-        `/api/message/${receivedMessage.chatId}`,
-        config
-      );
-
-      return data[data.length - 1];
-    } catch (error) {
-      rejectWithValue(
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.response
-      );
-    }
   }
 );
 

@@ -5,7 +5,7 @@ import MessageSender from './MessageSender';
 import '../assets/style/Chat.css';
 import '../assets/style/ChatBox.css';
 
-const ChatBox = ({ clickedUser, setSendMessage, receivedMessage }) => {
+const ChatBox = ({ clickedUser }) => {
   return clickedUser ? (
     <div className='right-side-chat'>
       <div className='chatbox-container'>
@@ -13,16 +13,10 @@ const ChatBox = ({ clickedUser, setSendMessage, receivedMessage }) => {
           <div className='chat-header'>{clickedUser.name}</div>
 
           {/* Chatbox messages */}
-          <MessageBox
-            clickedUser={clickedUser}
-            receivedMessage={receivedMessage}
-          />
+          <MessageBox clickedUser={clickedUser} />
 
           {/* Chat Sender */}
-          <MessageSender
-            clickedUser={clickedUser}
-            setSendMessage={setSendMessage}
-          />
+          <MessageSender clickedUser={clickedUser} />
         </>
       </div>
     </div>

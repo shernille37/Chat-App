@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import Message from './Message';
 import { format } from 'timeago.js';
 import { useSelector, useDispatch } from 'react-redux';
-import { getMessages, receiveMessage } from '../actions/messageActions';
+import { getMessages } from '../actions/messageActions';
 import Spinner from './utils/Spinner';
 
-const MessageBox = ({ clickedUser, receivedMessage }) => {
+const MessageBox = ({ clickedUser }) => {
   const authUser = useSelector((state) => state.auth.authUser);
   const { user } = authUser;
 
@@ -23,15 +23,6 @@ const MessageBox = ({ clickedUser, receivedMessage }) => {
     scroll?.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messageList]);
 
-  useEffect(() => {
-    if (
-      receivedMessage !== null &&
-      receivedMessage.chatId == clickedUser.chatId
-    ) {
-      dispatch(receiveMessage(receivedMessage));
-    }
-  }, [receivedMessage]);
-
   return (
     <div className='chat-body'>
       {loading ? (
@@ -46,7 +37,9 @@ const MessageBox = ({ clickedUser, receivedMessage }) => {
             ref={scroll}
             key={message._id}
             className={
-              message.senderId === user._id ? 'message own' : 'message'
+              message.senderId && message.senderId === user._id
+                ? 'message own'
+                : 'message'
             }
           >
             <span>{message.text}</span>

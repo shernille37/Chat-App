@@ -31,8 +31,19 @@ io.on('connection', (socket) => {
 
     if (user) {
       console.log('RECEIVED MESSAGE');
+
       io.to(user.socketId).emit('receive-message', data);
     }
+  });
+
+  socket.on('logout', (data) => {
+    console.log('LOGOUT');
+    const user = activeUsers.find((user) => user.userId === data);
+
+    io.sockets.sockets.forEach((socket) => {
+      // If given socket id is exist in list of all sockets, kill it
+      if (socket.id === user.socketId) socket.disconnect();
+    });
   });
 
   socket.on('disconnect', () => {

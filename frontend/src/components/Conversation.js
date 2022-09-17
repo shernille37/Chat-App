@@ -8,7 +8,7 @@ import Message from './Message';
 import '../assets/style/Chat.css';
 import Spinner from './utils/Spinner';
 
-const Conversation = ({ user, setClickedUser }) => {
+const Conversation = ({ user, setClickedUser, socket }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -22,6 +22,11 @@ const Conversation = ({ user, setClickedUser }) => {
   useEffect(() => {
     dispatch(getChats());
   }, []);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    socket.current.emit('logout', user._id);
+  };
 
   return (
     <div className='left-side-chat'>
@@ -49,7 +54,7 @@ const Conversation = ({ user, setClickedUser }) => {
           ))
         )}
 
-        <div className='logout' onClick={() => dispatch(logout())}>
+        <div className='logout' onClick={handleLogout}>
           Logout
         </div>
       </div>

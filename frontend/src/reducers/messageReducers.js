@@ -14,7 +14,6 @@ const initialState = {
     error: null,
   },
   sentMessage: null,
-  receivedMessage: null,
 };
 
 const messageReducer = createSlice({

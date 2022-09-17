@@ -56,7 +56,11 @@ const ChatScreen = () => {
       <div className='chat'>
         {/* LEFT SIDE */}
 
-        <Conversation setClickedUser={setClickedUser} user={user} />
+        <Conversation
+          setClickedUser={setClickedUser}
+          user={user}
+          socket={socket}
+        />
 
         {/* RIGHT SIDE */}
 

@@ -75,3 +75,19 @@ export const getUserProfile = asyncHandler(async (req, res) => {
     throw new Error('User not Found');
   }
 });
+
+// @desc Get All User Profile
+// @route GET /api/users
+// @access PRIVATE
+export const getAllUsers = asyncHandler(async (req, res) => {
+  const users = await User.find({ _id: { $ne: req.user._id } }).select(
+    '-password'
+  );
+
+  if (users) {
+    res.json(users);
+  } else {
+    res.status(401);
+    throw new Error('No Users found');
+  }
+});

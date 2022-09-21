@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getChats } from '../actions/chatActions';
+import { addChat, getChats } from '../actions/chatActions';
 
 const initialState = {
   chatList: {
@@ -7,12 +7,17 @@ const initialState = {
     loading: true,
     error: null,
   },
+  successAdd: false,
 };
 
 const chatReducer = createSlice({
   name: 'chats',
   initialState,
-  reducers: {},
+  reducers: {
+    resetSuccessAdd: (state) => {
+      state.successAdd = false;
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(getChats.pending, ({ chatList }, action) => {
@@ -25,8 +30,19 @@ const chatReducer = createSlice({
       .addCase(getChats.rejected, ({ chatList }, action) => {
         chatList.loading = false;
         chatList.error = action.payload;
+      })
+      .addCase(addChat.pending, (state, action) => {
+        state.successAdd = false;
+      })
+      .addCase(addChat.fulfilled, (state, action) => {
+        state.successAdd = true;
+      })
+      .addCase(addChat.rejected, (state, action) => {
+        state.successAdd = false;
+        state.chatList.error = action.payload;
       });
   },
 });
 
 export const chatSlice = chatReducer.reducer;
+export const { resetSuccessAdd } = chatReducer.actions;

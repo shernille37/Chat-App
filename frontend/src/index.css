@@ -186,7 +186,7 @@
 
 /* Message */
 .error {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   width: 100%;
   text-align: center;
   color: #fff;
@@ -196,7 +196,7 @@
 }
 
 .info {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   width: 100%;
   text-align: center;
   color: #fff;

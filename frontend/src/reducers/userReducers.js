@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
+  getAllUsers,
   getUserProfile,
   login,
   logout,
@@ -16,6 +17,11 @@ const initialState = {
   },
   userInfo: {
     details: null,
+    loading: true,
+    error: null,
+  },
+  userList: {
+    list: [],
     loading: true,
     error: null,
   },
@@ -77,6 +83,20 @@ const userReducer = createSlice({
       .addCase(getUserProfile.rejected, ({ userInfo }, action) => {
         userInfo.loading = false;
         userInfo.error = action.payload;
+      })
+
+      // GET ALL USERS
+
+      .addCase(getAllUsers.pending, ({ userList }, action) => {
+        userList.loading = true;
+      })
+      .addCase(getAllUsers.fulfilled, ({ userList }, action) => {
+        userList.loading = false;
+        userList.list = action.payload;
+      })
+      .addCase(getAllUsers.rejected, ({ userList }, action) => {
+        userList.loading = false;
+        userList.error = action.payload;
       });
   },
 });

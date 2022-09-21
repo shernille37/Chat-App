@@ -1,14 +1,39 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const getChats = createAsyncThunk(
-  'GET_USER_CHATS',
-  async (id, { rejectWithValue, getState }) => {
+export const addChat = createAsyncThunk(
+  'ADD_CHAT',
+  async ({ chatMate }, { rejectWithValue }) => {
     const { token } = JSON.parse(localStorage.getItem('user')) || null;
 
-    let chatPromises = [];
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    };
 
-    const authUserId = getState().auth.authUser.user._id;
+    try {
+      const { data } = await axios.post('/api/chat', { chatMate }, config);
+
+      return data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.response
+      );
+    }
+  }
+);
+
+export const getChats = createAsyncThunk(
+  'GET_USER_CHATS',
+  async (id, { rejectWithValue }) => {
+    const { token, _id: authUserId } =
+      JSON.parse(localStorage.getItem('user')) || null;
+
+    let chatPromises = [];
 
     const config = {
       headers: {

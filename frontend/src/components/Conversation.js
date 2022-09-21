@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getChats } from '../actions/chatActions';
+import { resetSuccessAdd } from '../reducers/chatReducers';
 import { logout } from '../actions/userActions';
 
 import Message from './Message';
@@ -17,6 +18,8 @@ const Conversation = ({ user, setClickedUser, socket }) => {
   const chatList = useSelector((state) => state.chat.chatList);
   const { chats, loading, error } = chatList;
 
+  const successAdd = useSelector((state) => state.chat.successAdd);
+
   const [isClicked, setIsClicked] = useState(false);
 
   useEffect(() => {
@@ -26,6 +29,13 @@ const Conversation = ({ user, setClickedUser, socket }) => {
   useEffect(() => {
     dispatch(getChats());
   }, []);
+
+  useEffect(() => {
+    if (successAdd) {
+      dispatch(getChats());
+      dispatch(resetSuccessAdd());
+    }
+  }, [successAdd]);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -43,10 +53,9 @@ const Conversation = ({ user, setClickedUser, socket }) => {
             onClick={() => setIsClicked(true)}
           ></i>
         </div>
+        {error && <Message variant='error'>{error}</Message>}
         {loading ? (
           <Spinner />
-        ) : error ? (
-          <Message variant='error'>{error}</Message>
         ) : chats.length === 0 ? (
           <Message variant='info'>No Chats</Message>
         ) : (
@@ -69,9 +78,9 @@ const Conversation = ({ user, setClickedUser, socket }) => {
       <Modal
         open={isClicked}
         close={() => setIsClicked(false)}
-        header={'Add a conversation'}
+        header={'Choose a User'}
       >
-        <AddChat />
+        <AddChat close={() => setIsClicked(false)} />
       </Modal>
     </div>
   );

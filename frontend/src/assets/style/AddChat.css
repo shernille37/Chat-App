@@ -1,0 +1,19 @@
+.userlist {
+  max-height: 200px;
+
+  overflow: scroll;
+}
+
+.userlist > li {
+  list-style: none;
+  text-align: center;
+  padding: 0.5rem;
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.userlist > li:hover {
+  background-color: var(--primary);
+  color: #fff;
+}

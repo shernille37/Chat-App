@@ -1,58 +1,50 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { getAllUsers } from '../actions/userActions';
+import Spinner from './utils/Spinner';
 import Message from './Message';
 
-const AddChat = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+import '../assets/style/AddChat.css';
+import { addChat } from '../actions/chatActions';
 
+const AddChat = ({ close }) => {
   const authUser = useSelector((state) => state.auth.authUser);
+  const { user } = authUser;
 
-  const { user, loading, error } = authUser;
+  const userList = useSelector((state) => state.auth.userList);
+  const { list, loading, error } = userList;
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const submitHandler = (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    if (!user) navigate('/login');
+    else dispatch(getAllUsers());
+  }, [user]);
+
+  const submitHandler = (userId) => {
+    dispatch(addChat({ chatMate: userId }));
+    close();
   };
 
-  return (
-    <form className='form' onSubmit={submitHandler}>
-      {loading && <Message variant='info'>Logging In...</Message>}
+  return loading ? (
+    <Spinner />
+  ) : (
+    <>
       {error && <Message variant='error'>{error}</Message>}
-      <div className='input-container'>
-        <input
-          type='email'
-          name='email'
-          placeholder=' '
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <i className='icon fa-regular fa-envelope-open'></i>
-        <label htmlFor='email' className='form-label'>
-          Email
-        </label>
-      </div>
-      <div className='input-container'>
-        <input
-          type='password'
-          name='password'
-          placeholder=' '
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <i className='icon fa-solid fa-key'></i>
-
-        <label htmlFor='password' className='form-label'>
-          Password
-        </label>
-      </div>
-      <button type='submit' className='btn-submit'>
-        Add
-      </button>
-    </form>
+      {list.length === 0 ? (
+        <div className='no-user'>No users found</div>
+      ) : (
+        <ul className='userlist'>
+          {list.map((user) => (
+            <li key={user._id} onClick={() => submitHandler(user._id)}>
+              {user.name}
+            </li>
+          ))}
+        </ul>
+      )}
+    </>
   );
 };
 

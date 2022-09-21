@@ -6,12 +6,21 @@ import asyncHandler from 'express-async-handler';
 // @access PRIVATE
 
 export const createChat = asyncHandler(async (req, res) => {
-  const newChat = new Chat({
-    members: [req.user._id.toString(), req.body.chatMate],
+  const chatIsExist = await Chat.findOne({
+    members: { $all: [req.user._id.toString(), req.body.chatMate] },
   });
 
-  const result = await newChat.save();
-  res.status(201).json(result);
+  if (chatIsExist) {
+    res.status(400);
+    throw new Error('Conversation already exists');
+  } else {
+    const newChat = new Chat({
+      members: [req.user._id.toString(), req.body.chatMate],
+    });
+
+    const result = await newChat.save();
+    res.status(201).json(result);
+  }
 });
 
 // @desc Find user chats (can be more than one)

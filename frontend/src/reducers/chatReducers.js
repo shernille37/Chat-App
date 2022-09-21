@@ -15,6 +15,9 @@ const chatReducer = createSlice({
   name: 'chats',
   initialState,
   reducers: {
+    resetError: (state) => {
+      state.chatList.error = null;
+    },
     resetSuccessAdd: (state) => {
       state.successAdd = false;
     },
@@ -24,6 +27,8 @@ const chatReducer = createSlice({
   },
   extraReducers(builder) {
     builder
+
+      // GET CHATS
       .addCase(getChats.pending, ({ chatList }, action) => {
         chatList.loading = true;
       })
@@ -35,6 +40,8 @@ const chatReducer = createSlice({
         chatList.loading = false;
         chatList.error = action.payload;
       })
+
+      // ADD A CHAT
       .addCase(addChat.pending, (state, action) => {
         state.successAdd = false;
       })
@@ -45,6 +52,8 @@ const chatReducer = createSlice({
         state.successAdd = false;
         state.chatList.error = action.payload;
       })
+
+      // DELETE CHAT
       .addCase(deleteChat.pending, (state, action) => {
         state.successDelete = false;
       })
@@ -59,4 +68,5 @@ const chatReducer = createSlice({
 });
 
 export const chatSlice = chatReducer.reducer;
-export const { resetSuccessAdd, resetSuccessDelete } = chatReducer.actions;
+export const { resetError, resetSuccessAdd, resetSuccessDelete } =
+  chatReducer.actions;

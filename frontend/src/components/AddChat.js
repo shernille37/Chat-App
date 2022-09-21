@@ -8,7 +8,7 @@ import Message from './Message';
 import '../assets/style/AddChat.css';
 import { addChat } from '../actions/chatActions';
 
-const AddChat = () => {
+const AddChat = ({ close }) => {
   const authUser = useSelector((state) => state.auth.authUser);
   const { user } = authUser;
 
@@ -25,6 +25,7 @@ const AddChat = () => {
 
   const submitHandler = (userId) => {
     dispatch(addChat({ chatMate: userId }));
+    close();
   };
 
   return loading ? (

@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getChats } from '../actions/chatActions';
-import { resetSuccessAdd, resetSuccessDelete } from '../reducers/chatReducers';
+import {
+  resetError,
+  resetSuccessAdd,
+  resetSuccessDelete,
+} from '../reducers/chatReducers';
 import { logout } from '../actions/userActions';
 
 import Message from './Message';
@@ -26,11 +30,8 @@ const Conversation = ({ user, setClickedUser, socket }) => {
 
   useEffect(() => {
     if (!user) navigate('/login');
+    else dispatch(getChats());
   }, [user, navigate]);
-
-  useEffect(() => {
-    dispatch(getChats());
-  }, []);
 
   useEffect(() => {
     if (successAdd || successDelete) {
@@ -39,7 +40,15 @@ const Conversation = ({ user, setClickedUser, socket }) => {
       dispatch(resetSuccessDelete());
       setOpenModal(false);
     }
-  }, [successAdd, successDelete]);
+
+    if (error) {
+      const timeout = setTimeout(() => {
+        dispatch(resetError());
+      }, 3000);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [successAdd, successDelete, error]);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -84,7 +93,7 @@ const Conversation = ({ user, setClickedUser, socket }) => {
         close={() => setOpenModal(false)}
         header={'Choose a User'}
       >
-        <AddChat />
+        <AddChat close={() => setOpenModal(false)} />
       </Modal>
     </div>
   );

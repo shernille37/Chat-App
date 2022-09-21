@@ -20,8 +20,26 @@ const ChatBox = ({ clickedUser, setClickedUser }) => {
     setClickedUser(null);
   };
 
-  return (
+  return clickedUser ? (
     <>
+      <div className='right-side-chat'>
+        <div className='chatbox-container'>
+          <div className='chat-header'>
+            {clickedUser.name}
+            <i
+              className='icon fa-solid fa-trash'
+              onClick={() => setOpenModal(true)}
+            ></i>
+          </div>
+
+          {/* Chatbox messages */}
+          <MessageBox clickedUser={clickedUser} />
+
+          {/* Chat Sender */}
+          <MessageSender clickedUser={clickedUser} />
+        </div>
+      </div>
+
       <Modal
         header={'Are you sure?'}
         open={openModal}
@@ -36,30 +54,9 @@ const ChatBox = ({ clickedUser, setClickedUser }) => {
           </button>
         </div>
       </Modal>
-      {clickedUser ? (
-        <div className='right-side-chat'>
-          <div className='chatbox-container'>
-            <>
-              <div className='chat-header'>
-                {clickedUser.name}
-                <i
-                  className='icon fa-solid fa-trash'
-                  onClick={() => setOpenModal(true)}
-                ></i>
-              </div>
-
-              {/* Chatbox messages */}
-              <MessageBox clickedUser={clickedUser} />
-
-              {/* Chat Sender */}
-              <MessageSender clickedUser={clickedUser} />
-            </>
-          </div>
-        </div>
-      ) : (
-        <div className='chat-header'>Click on a conversation</div>
-      )}
     </>
+  ) : (
+    <div className='chat-header'>Click on a conversation</div>
   );
 };
 

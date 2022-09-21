@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { addChat, deleteChat, getChats } from '../actions/chatActions';
+import { receiveMessage } from '../actions/messageActions';
 
 const initialState = {
   chatList: {
@@ -63,6 +64,11 @@ const chatReducer = createSlice({
       .addCase(deleteChat.rejected, (state, action) => {
         state.successDelete = false;
         state.chatList.error = action.payload;
+      })
+
+      // RECEIVE A MESSAGE
+      .addCase(receiveMessage, ({ chatList }, action) => {
+        chatList.loading = false;
       });
   },
 });

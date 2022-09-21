@@ -1,27 +1,65 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { deleteChat } from '../actions/chatActions';
+
 import MessageBox from './MessageBox';
 import MessageSender from './MessageSender';
+import Modal from './utils/Modal';
 
 import '../assets/style/Chat.css';
 import '../assets/style/ChatBox.css';
 
-const ChatBox = ({ clickedUser }) => {
-  return clickedUser ? (
-    <div className='right-side-chat'>
-      <div className='chatbox-container'>
-        <>
-          <div className='chat-header'>{clickedUser.name}</div>
+const ChatBox = ({ clickedUser, setClickedUser }) => {
+  const [openModal, setOpenModal] = useState(false);
 
-          {/* Chatbox messages */}
-          <MessageBox clickedUser={clickedUser} />
+  const dispatch = useDispatch();
 
-          {/* Chat Sender */}
-          <MessageSender clickedUser={clickedUser} />
-        </>
-      </div>
-    </div>
-  ) : (
-    <div className='chat-header'>Click on a conversation</div>
+  const handleDelete = () => {
+    dispatch(deleteChat({ chatMate: clickedUser._id }));
+    setOpenModal(false);
+    setClickedUser(null);
+  };
+
+  return (
+    <>
+      <Modal
+        header={'Are you sure?'}
+        open={openModal}
+        close={() => setOpenModal(false)}
+      >
+        <div className='modal-button'>
+          <button className='confirm' onClick={handleDelete}>
+            Yes
+          </button>
+          <button className='cancel' onClick={() => setOpenModal(false)}>
+            Cancel
+          </button>
+        </div>
+      </Modal>
+      {clickedUser ? (
+        <div className='right-side-chat'>
+          <div className='chatbox-container'>
+            <>
+              <div className='chat-header'>
+                {clickedUser.name}
+                <i
+                  className='icon fa-solid fa-trash'
+                  onClick={() => setOpenModal(true)}
+                ></i>
+              </div>
+
+              {/* Chatbox messages */}
+              <MessageBox clickedUser={clickedUser} />
+
+              {/* Chat Sender */}
+              <MessageSender clickedUser={clickedUser} />
+            </>
+          </div>
+        </div>
+      ) : (
+        <div className='chat-header'>Click on a conversation</div>
+      )}
+    </>
   );
 };
 

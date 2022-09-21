@@ -1,4 +1,5 @@
 import Chat from '../models/ChatModel.js';
+import Message from '../models/MessageModel.js';
 import asyncHandler from 'express-async-handler';
 
 // @desc Create a new chat (connection)
@@ -46,5 +47,21 @@ export const findChat = asyncHandler(async (req, res) => {
   });
 
   if (chat) res.status(200).json(chat);
+  else throw new Error('No chat found');
+});
+
+// @desc DELETE conversation
+// @route GET /api/chat?:chatMate
+// @access PRIVATE
+
+export const deleteChat = asyncHandler(async (req, res) => {
+  const chat = await Chat.findOne({
+    members: { $all: [req.user._id.toString(), req.query.chatMate] },
+  });
+
+  await chat.remove();
+  const deleteMessages = await Message.deleteMany({ chatId: chat._id });
+
+  if (chat) res.status(200).json(deleteMessages);
   else throw new Error('No chat found');
 });

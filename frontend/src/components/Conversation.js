@@ -2,14 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getChats } from '../actions/chatActions';
-import { resetSuccessAdd } from '../reducers/chatReducers';
+import { resetSuccessAdd, resetSuccessDelete } from '../reducers/chatReducers';
 import { logout } from '../actions/userActions';
 
 import Message from './Message';
-import '../assets/style/Chat.css';
 import Spinner from './utils/Spinner';
 import Modal from './utils/Modal';
 import AddChat from './AddChat';
+
+import '../assets/style/Chat.css';
 
 const Conversation = ({ user, setClickedUser, socket }) => {
   const dispatch = useDispatch();
@@ -19,8 +20,9 @@ const Conversation = ({ user, setClickedUser, socket }) => {
   const { chats, loading, error } = chatList;
 
   const successAdd = useSelector((state) => state.chat.successAdd);
+  const successDelete = useSelector((state) => state.chat.successDelete);
 
-  const [isClicked, setIsClicked] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
     if (!user) navigate('/login');
@@ -31,11 +33,13 @@ const Conversation = ({ user, setClickedUser, socket }) => {
   }, []);
 
   useEffect(() => {
-    if (successAdd) {
+    if (successAdd || successDelete) {
       dispatch(getChats());
       dispatch(resetSuccessAdd());
+      dispatch(resetSuccessDelete());
+      setOpenModal(false);
     }
-  }, [successAdd]);
+  }, [successAdd, successDelete]);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -50,7 +54,7 @@ const Conversation = ({ user, setClickedUser, socket }) => {
           <p>Chats</p>
           <i
             className='icon fa-solid fa-plus'
-            onClick={() => setIsClicked(true)}
+            onClick={() => setOpenModal(true)}
           ></i>
         </div>
         {error && <Message variant='error'>{error}</Message>}
@@ -76,11 +80,11 @@ const Conversation = ({ user, setClickedUser, socket }) => {
       </div>
 
       <Modal
-        open={isClicked}
-        close={() => setIsClicked(false)}
+        open={openModal}
+        close={() => setOpenModal(false)}
         header={'Choose a User'}
       >
-        <AddChat close={() => setIsClicked(false)} />
+        <AddChat />
       </Modal>
     </div>
   );

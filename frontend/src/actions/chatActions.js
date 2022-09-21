@@ -64,3 +64,31 @@ export const getChats = createAsyncThunk(
     }
   }
 );
+
+export const deleteChat = createAsyncThunk(
+  'DELETE_CHAT',
+  async ({ chatMate }, { rejectWithValue }) => {
+    const { token } = JSON.parse(localStorage.getItem('user')) || null;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    try {
+      const { data } = await axios.delete(
+        `/api/chat?chatMate=${chatMate}`,
+        config
+      );
+
+      return data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.response
+      );
+    }
+  }
+);

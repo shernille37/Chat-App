@@ -9,6 +9,7 @@
   opacity: 0;
   pointer-events: none;
   transition: all 500ms ease;
+  z-index: 2;
 }
 
 .modal-container.show {
@@ -28,6 +29,7 @@
   position: relative;
   text-align: center;
   margin-bottom: 2rem;
+  border-bottom: 1px solid var(--gray);
 }
 
 .modal-header > .icon {
@@ -40,4 +42,28 @@
 
 .modal-header > .icon:hover {
   color: var(--danger);
+}
+
+.modal-button {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  padding: 1rem;
+}
+
+.modal-button > * {
+  padding: 0.3rem;
+  border-radius: 0.5rem;
+  width: 100px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.modal-button .confirm {
+  background-color: var(--primary);
+}
+
+.modal-button .cancel {
+  background-color: var(--danger);
 }

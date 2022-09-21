@@ -4,6 +4,7 @@
 }
 
 .chat-header {
+  position: relative;
   padding: 1rem 1rem 0rem 1rem;
   display: flex;
   flex-direction: column;
@@ -13,6 +14,19 @@
   letter-spacing: 2px;
   font-weight: 900;
   text-align: center;
+}
+
+.chat-header .icon {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.chat-header .icon:hover {
+  color: var(--danger);
 }
 
 .chat-body {

@@ -64,7 +64,7 @@ const ChatScreen = () => {
 
         {/* RIGHT SIDE */}
 
-        <ChatBox clickedUser={clickedUser} />
+        <ChatBox clickedUser={clickedUser} setClickedUser={setClickedUser} />
       </div>
     )
   );

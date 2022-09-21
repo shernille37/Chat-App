@@ -1,0 +1,43 @@
+.modal-container {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Poppins', 'Verdana', 'sans-serif';
+  opacity: 0;
+  pointer-events: none;
+  transition: all 500ms ease;
+}
+
+.modal-container.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal {
+  background: #fff;
+  padding: 1rem;
+  width: 600px;
+  max-width: 100%;
+  border-radius: 1rem;
+}
+
+.modal-header {
+  position: relative;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.modal-header > .icon {
+  position: absolute;
+  font-size: 1.2rem;
+  right: 1rem;
+  top: 1rem;
+  cursor: pointer;
+}
+
+.modal-header > .icon:hover {
+  color: var(--danger);
+}

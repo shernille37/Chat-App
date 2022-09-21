@@ -71,7 +71,7 @@
   justify-content: center;
 }
 
-.form {
+.form-container .form {
   background-color: #fff;
   border-radius: 1rem;
   padding: 30px;
@@ -87,7 +87,7 @@
   margin-bottom: 2rem;
 }
 
-.form .title::before {
+.form-container .form .title::before {
   content: '';
   position: absolute;
   left: 0;

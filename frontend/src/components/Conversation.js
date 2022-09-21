@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getChats } from '../actions/chatActions';
@@ -7,6 +7,8 @@ import { logout } from '../actions/userActions';
 import Message from './Message';
 import '../assets/style/Chat.css';
 import Spinner from './utils/Spinner';
+import Modal from './utils/Modal';
+import AddChat from './AddChat';
 
 const Conversation = ({ user, setClickedUser, socket }) => {
   const dispatch = useDispatch();
@@ -14,6 +16,8 @@ const Conversation = ({ user, setClickedUser, socket }) => {
 
   const chatList = useSelector((state) => state.chat.chatList);
   const { chats, loading, error } = chatList;
+
+  const [isClicked, setIsClicked] = useState(false);
 
   useEffect(() => {
     if (!user) navigate('/login');
@@ -34,7 +38,10 @@ const Conversation = ({ user, setClickedUser, socket }) => {
         <div className='chat-heading'>
           <p className='name'>{user.name}</p>
           <p>Chats</p>
-          <i className='icon fa-solid fa-plus'></i>
+          <i
+            className='icon fa-solid fa-plus'
+            onClick={() => setIsClicked(true)}
+          ></i>
         </div>
         {loading ? (
           <Spinner />
@@ -58,6 +65,14 @@ const Conversation = ({ user, setClickedUser, socket }) => {
           Logout
         </div>
       </div>
+
+      <Modal
+        open={isClicked}
+        close={() => setIsClicked(false)}
+        header={'Add a conversation'}
+      >
+        <AddChat />
+      </Modal>
     </div>
   );
 };
